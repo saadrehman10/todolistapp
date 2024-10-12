@@ -83,6 +83,25 @@ class Task {
     data['url'] = url;
     return data;
   }
+
+  Map<String, dynamic> toJsonForUpdate() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['content'] = content;
+    data['description'] = description;
+    data['priority'] = priority;
+
+    if (due != null) {
+      data['due_string'] = due!.string;
+      data['due_date'] = due!.date;
+    }
+    data['label_ids'] = labels;
+    data['project_id'] = projectId;
+    data['section_id'] = sectionId;
+    data['parent_id'] = parentId;
+    data['order'] = order;
+
+    return data;
+  }
 }
 
 class Due {

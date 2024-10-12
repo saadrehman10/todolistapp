@@ -74,14 +74,20 @@ class TodoListApi {
     }
   }
 
-  static Future<void> updateTask({required taskId, required String task}) async {
+  static Future<bool> updateTask({required String taskId, required Task task}) async {
     final String url = "https://api.todoist.com/rest/v2/tasks/$taskId";
-    final apiResponse = await http.put(Uri.parse(url), headers: {
-      'Authorization': 'Bearer $todoListApiKey',
-      "Content-Type": "application/json",
-    }, body: {
-      'content': task,
-    });
+    final apiResponse = await http.post(Uri.parse(url),
+        headers: {
+          'Authorization': 'Bearer $todoListApiKey',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(task.toJsonForUpdate()));
+
+    if (apiResponse.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   static Future<bool> closeTask({required String taskId}) async {
